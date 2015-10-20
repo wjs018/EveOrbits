@@ -1,3 +1,11 @@
+#===============================================================================
+# 
+# Basic GUI interface for simulating the orbits of ships in Eve Online.
+#
+# contact: wjs018@gmail.com
+# 
+#===============================================================================
+
 from Tkinter import *
 import tkFileDialog
 from ttk import *

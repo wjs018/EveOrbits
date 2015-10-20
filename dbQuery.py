@@ -1,3 +1,20 @@
+#===============================================================================
+# 
+# Basic functions for accessing the SDE of Eve Online in .sqlite format.
+# 
+# Most recent SDE export can be found at 
+# 
+# https://www.fuzzwork.co.uk/dump/sqlite-latest.sqlite.bz2
+# 
+# It should be unpacked and placed into the same directory as this program.
+# Alternatively, a filepath can be specified inside this program in the
+# SDEQuery function. All other functions reference back to this, so that one
+# change there will enable all other functions to operate normally.
+#
+# contact: wjs018@gmail.com
+# 
+#===============================================================================
+
 import sqlite3
 
 
