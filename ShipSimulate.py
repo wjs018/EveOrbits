@@ -60,7 +60,7 @@ def createRotMatrix(theta):
     return rotMat
 
 
-def simulateOrbit(ctx, radius):
+def simulateOrbit(ctx, radius, throttle=1.0):
     """
     Simulates the orbit of a ship in EVE at a given radius.
 
@@ -74,6 +74,11 @@ def simulateOrbit(ctx, radius):
                     is not necessarily the radius at which the
                     ship will orbit, just the radius at which
                     it will try to orbit.
+                    
+        throttle    By default this is 1.0 (maximum throttle). This
+                     is the fraction possible force you want the 
+                    ship to apply. This is linearly related to the
+                    maximum speed of the ship.
 
     Returns:
 
@@ -100,7 +105,11 @@ def simulateOrbit(ctx, radius):
 
     # Calculate the maximum force our ship can generate
 
-    maxForce = maxSpeed * inertia
+    maxForce = maxSpeed * inertia * throttle
+    
+    # Get the new maxSpeed of the ship, taking throttle into account
+    
+    maxSpeed = maxForce * agility
 
     # Set an initial position for the ship at 2*radius
 
@@ -389,7 +398,7 @@ if __name__ == '__main__':
     
     # call the Function
     
-    rad, vel, ang = simulateOrbit(ship1ctx, 1500)
+    rad, vel, ang = simulateOrbit(ship1ctx, 1500, throttle=1.0)
     
     print 'rad = ' + str(rad)
     print 'vel = ' + str(vel)
