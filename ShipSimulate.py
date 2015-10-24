@@ -346,6 +346,7 @@ def simulateOrbit(ctx, radius, throttle=1.0):
 if __name__ == '__main__':
 
     # Create a context object for ship fitting
+    # standalone
     
     ship1ctx = dogma.Context()
     
