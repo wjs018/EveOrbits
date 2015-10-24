@@ -7,8 +7,6 @@
 #===============================================================================
 
 import math
-
-import dogma
 import numpy as np
 
 
@@ -60,15 +58,20 @@ def createRotMatrix(theta):
     return rotMat
 
 
-def simulateOrbit(ctx, radius, throttle=1.0):
+def simulateOrbit(maxSpeed, mass, agility, radius, throttle=1.0):
     """
     Simulates the orbit of a ship in EVE at a given radius.
 
     Input:
 
-        ctx         A dogma.Context object. This is what will
-                    be used to calculate navigation parameters
-                    in order to find a realistic result.
+        maxSpeed    The maximum speed of the ship in m/s. This
+                    should take into account any modules or implants
+                    that are in use.
+                    
+        mass        Mass of the ship in millions of kgs. Like
+                    maxSpeed, this should take into account modules.
+                    
+        agility     The agility multiplier of the ship.
 
         radius      The desired radius to set the orbit (m). This
                     is not necessarily the radius at which the
@@ -91,16 +94,7 @@ def simulateOrbit(ctx, radius, throttle=1.0):
         angular     The angular velocity of the ship traveling
                     in the stable orbit.
     """
-
-    # Define our ship
-
-    ship = ctx
-
-    # Set some parameters of our ship from the libdogma engine
-
-    maxSpeed = ship.get_ship_attribute(37)
-    agility = ship.get_ship_attribute(70)
-    mass = ship.get_ship_attribute(4) / 1000000
+    
     inertia = 1 / agility
 
     # Calculate the maximum force our ship can generate
@@ -344,62 +338,10 @@ def simulateOrbit(ctx, radius, throttle=1.0):
     return(simRadius, velocity, angular)
 
 if __name__ == '__main__':
-
-    # Create a context object for ship fitting
-    # standalone
     
-    ship1ctx = dogma.Context()
+    # call the Function with parameters for AB Harpy
     
-    # Give our character skills (all 5's here)
-    
-    ship1ctx.set_default_skill_level(5)
-    
-    # Define a hull
-    # 11381 = Harpy
-    
-    ship1ctx.set_ship(11381)
-    
-    # Try fitting some rigs
-    # 26929 = Small Processor Overclocking Unit I
-    # 31788 = Small Core Defense Field Extender I
-    # 17 = Online state dogma.State.ONLINE
-    
-    rig1 = ship1ctx.add_module(26929, state=dogma.State.ONLINE)
-    rig2 = ship1ctx.add_module(31788, state=dogma.State.ONLINE)
-    
-    # Try fitting some low slots
-    # 10190 = Magnetic Field Stabilizer II
-    # 5837 = Pseudoelectron Containment Field I
-    # 31 = Active state dogma.State.ACTIVE
-    
-    low1 = ship1ctx.add_module(10190, state=dogma.State.ONLINE)
-    low2 = ship1ctx.add_module(10190, state=dogma.State.ONLINE)
-    low3 = ship1ctx.add_module(5837, state=dogma.State.ACTIVE)
-    
-    # Try fitting some mid slots
-    # 438 = 1MN Afterburner II
-    # 2281 = Adaptive Invuln. II
-    # 6160 = F-90 Positional Sensor Subroutines
-    # 29009 = Targeting Range Script
-    # 9580 = Upgraded EM Ward Amplifier I
-    
-    mid1 = ship1ctx.add_module(438, state=dogma.State.ACTIVE)
-    mid2 = ship1ctx.add_module(2281, state=dogma.State.ACTIVE)
-    mid3 = ship1ctx.add_module(6160, state=dogma.State.ACTIVE, charge=29009)
-    mid4 = ship1ctx.add_module(9580, state=dogma.State.ONLINE)
-    
-    # Try fitting some high slots
-    # 3074 = 150mm Railgun II
-    # 23009 = CN Antimatter S
-    
-    high1 = ship1ctx.add_module(3074, state=dogma.State.ACTIVE, charge=23009)
-    high2 = ship1ctx.add_module(3074, state=dogma.State.ACTIVE, charge=23009)
-    high3 = ship1ctx.add_module(3074, state=dogma.State.ACTIVE, charge=23009)
-    high4 = ship1ctx.add_module(3074, state=dogma.State.ACTIVE, charge=23009)
-    
-    # call the Function
-    
-    rad, vel, ang = simulateOrbit(ship1ctx, 1500, throttle=1.0)
+    rad, vel, ang = simulateOrbit(835.0, 1.655, 2.452, 1500, throttle=1.0)
     
     print 'rad = ' + str(rad)
     print 'vel = ' + str(vel)
